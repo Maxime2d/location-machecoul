@@ -58,6 +58,8 @@ export async function POST(request) {
       occupants: data.occupants,
       moveDate: data.moveDate,
       message: data.message || '',
+      hasGarant: data.hasGarant || false,
+      documents: data.documents || {},
       status: 'new'
     };
 
