@@ -204,6 +204,13 @@ export default function Home() {
 
   const handleStep1Submit = (e) => {
     e.preventDefault();
+
+    // Vérifier que situation1 est sélectionné
+    if (!situation1) {
+      alert('Veuillez sélectionner la situation professionnelle du Locataire 1.');
+      return;
+    }
+
     const data = new FormData(e.target);
     const formEntries = Object.fromEntries(data.entries());
     // Ajouter les situations au formData
@@ -545,36 +552,99 @@ export default function Home() {
       {/* Pièces justificatives */}
       <div className="max-w-6xl mx-auto px-4 py-10">
         <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Pièces à préparer si éligible</h2>
-        <p className="text-gray-600 mb-6">Si vous remplissez les critères d'éligibilité, préparez les documents suivants pour constituer votre dossier :</p>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="font-semibold text-lg text-primary-800 mb-4 flex items-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-              Pour le(s) locataire(s)
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Pièce d'identité</strong> en cours de validité (CNI, passeport ou titre de séjour)</span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de domicile</strong> : 3 dernières quittances de loyer ou attestation d'hébergement</span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de situation professionnelle</strong> : contrat de travail ou attestation employeur</span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>3 derniers bulletins de salaire</strong></span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Dernier avis d'imposition</strong></span></li>
+        <p className="text-gray-600 mb-6">Si vous remplissez les critères d'éligibilité, préparez les documents suivants selon votre situation professionnelle :</p>
+
+        {/* Documents de base pour tous */}
+        <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+          <h3 className="font-semibold text-lg text-primary-800 mb-4 flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Documents communs à tous les locataires
+          </h3>
+          <ul className="space-y-2 text-sm">
+            <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Pièce d'identité</strong> en cours de validité (CNI, passeport ou titre de séjour)</span></li>
+            <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de domicile</strong> : 3 dernières quittances de loyer ou attestation d'hébergement</span></li>
+            <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Dernier avis d'imposition</strong></span></li>
+          </ul>
+        </div>
+
+        {/* Documents selon situation */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          {/* CDI / CDD */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-green-500">
+            <h4 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">CDI / CDD</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-green-600">✓</span>Contrat de travail ou attestation employeur</li>
+              <li className="flex items-start gap-2"><span className="text-green-600">✓</span>3 derniers bulletins de salaire</li>
             </ul>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="font-semibold text-lg text-primary-800 mb-4 flex items-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-              Pour le garant (si nécessaire)
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Pièce d'identité</strong> en cours de validité</span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de domicile</strong> de moins de 3 mois</span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de situation professionnelle</strong></span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>3 derniers bulletins de salaire</strong></span></li>
-              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Dernier avis d'imposition</strong></span></li>
+
+          {/* Fonctionnaire */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-blue-500">
+            <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">Fonctionnaire</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-blue-600">✓</span>Arrêté de nomination ou attestation employeur</li>
+              <li className="flex items-start gap-2"><span className="text-blue-600">✓</span>3 derniers bulletins de salaire</li>
             </ul>
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800"><strong>Alternative :</strong> Garantie <a href="https://www.visale.fr" target="_blank" rel="noopener noreferrer" className="underline">Visale</a> (gratuit pour les moins de 30 ans)</p>
-            </div>
+          </div>
+
+          {/* Retraité */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-purple-500">
+            <h4 className="font-semibold text-purple-800 mb-3 flex items-center gap-2">
+              <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded">Retraité(e)</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-purple-600">✓</span>Attestation de retraite</li>
+              <li className="flex items-start gap-2"><span className="text-purple-600">✓</span>Dernier relevé de pension</li>
+            </ul>
+          </div>
+
+          {/* Indépendant */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-orange-500">
+            <h4 className="font-semibold text-orange-800 mb-3 flex items-center gap-2">
+              <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded">Indépendant</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-orange-600">✓</span>Extrait Kbis ou inscription INSEE</li>
+              <li className="flex items-start gap-2"><span className="text-orange-600">✓</span>Bilans comptables N-1 et N-2</li>
+            </ul>
+          </div>
+
+          {/* Étudiant */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-cyan-500">
+            <h4 className="font-semibold text-cyan-800 mb-3 flex items-center gap-2">
+              <span className="bg-cyan-100 text-cyan-700 text-xs px-2 py-1 rounded">Étudiant</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-cyan-600">✓</span>Certificat de scolarité</li>
+              <li className="flex items-start gap-2"><span className="text-cyan-600">✓</span>Avis d'imposition (ou des parents)</li>
+            </ul>
+          </div>
+
+          {/* Autre */}
+          <div className="bg-white rounded-xl p-5 shadow-sm border-l-4 border-gray-400">
+            <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">Autre situation</span>
+            </h4>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2"><span className="text-gray-500">✓</span>Justificatif de revenus</li>
+              <li className="flex items-start gap-2"><span className="text-gray-500">✓</span>Tout document attestant de votre situation</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Garant */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+          <h3 className="font-semibold text-lg text-amber-800 mb-4 flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Pour le garant (si nécessaire)
+          </h3>
+          <p className="text-sm text-amber-700 mb-3">Mêmes documents que le locataire selon sa situation professionnelle.</p>
+          <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800"><strong>💡 Alternative :</strong> Garantie <a href="https://www.visale.fr" target="_blank" rel="noopener noreferrer" className="underline font-medium">Visale</a> (gratuit pour les moins de 30 ans ou salariés de moins de 12 mois d'ancienneté)</p>
           </div>
         </div>
       </div>
