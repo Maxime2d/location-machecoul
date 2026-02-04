@@ -68,8 +68,8 @@ export default function Home() {
     <div className="bg-cream-50 font-sans text-gray-800">
       {/* Hero Section */}
       <div className="relative h-[65vh] bg-primary-900">
-        <img src="/images/sejour.jpg" className="w-full h-full object-cover opacity-75" alt="Séjour" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/90 to-transparent"></div>
+        <img src="/images/sejour-escalier.jpg" className="w-full h-full object-cover" alt="Séjour avec escalier" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/70 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="max-w-6xl mx-auto">
             <div className="inline-block bg-primary-600 text-white text-sm font-semibold px-3 py-1 rounded-full mb-3">Location vide</div>
@@ -140,8 +140,8 @@ export default function Home() {
           <div className="md:col-span-2">
             <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Description</h2>
             <div className="bg-white rounded-xl p-8 shadow-sm">
-              <p className="text-gray-700 leading-relaxed mb-4">Maison de ville T4 de 86,22 m² habitables sur 2 niveaux, située à Machecoul-Saint-Même à proximité immédiate du centre-ville et des écoles. Cette habitation offre un cadre de vie confortable avec un séjour lumineux, une cuisine équipée (four Bosch, plaque gaz), et 3 chambres spacieuses. Idéale pour une famille.</p>
-              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m². Construction d'avant 1948.</p>
+              <p className="text-gray-700 leading-relaxed mb-4">Maison de ville T4 de 86,22 m² habitables sur 2 niveaux, située à proximité immédiate du centre-ville de Machecoul. Cette habitation offre un cadre de vie confortable avec un séjour lumineux, une cuisine équipée (four Bosch, plaque gaz), et 3 chambres spacieuses. Idéale pour une famille.</p>
+              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m².</p>
             </div>
 
             {/* Surfaces */}
@@ -208,7 +208,6 @@ export default function Home() {
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Type de bien</span><span className="font-semibold">Maison de ville T4</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Surface habitable</span><span className="font-semibold">86,22 m²</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Terrain</span><span className="font-semibold">433 m²</span></div>
-              <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Année de construction</span><span className="font-semibold">Avant 1948</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Loyer mensuel HC</span><span className="font-semibold text-primary-700 text-lg">900 €</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Taxe ordures ménagères</span><span className="font-semibold">21 €/mois</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Charges (électricité)</span><span className="font-semibold">À la charge du locataire</span></div>
@@ -273,6 +272,43 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Pièces justificatives */}
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Pièces à préparer si éligible</h2>
+        <p className="text-gray-600 mb-6">Si vous remplissez les critères d'éligibilité, préparez les documents suivants pour constituer votre dossier :</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold text-lg text-primary-800 mb-4 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              Pour le(s) locataire(s)
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Pièce d'identité</strong> en cours de validité (CNI, passeport ou titre de séjour)</span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de domicile</strong> : 3 dernières quittances de loyer ou attestation d'hébergement</span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de situation professionnelle</strong> : contrat de travail ou attestation employeur</span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>3 derniers bulletins de salaire</strong></span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Dernier avis d'imposition</strong></span></li>
+            </ul>
+          </div>
+          <div className="bg-white rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold text-lg text-primary-800 mb-4 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              Pour le garant (si nécessaire)
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Pièce d'identité</strong> en cours de validité</span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de domicile</strong> de moins de 3 mois</span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Justificatif de situation professionnelle</strong></span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>3 derniers bulletins de salaire</strong></span></li>
+              <li className="flex items-start gap-2"><span className="text-primary-600 font-bold">•</span><span><strong>Dernier avis d'imposition</strong></span></li>
+            </ul>
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-800"><strong>Alternative :</strong> Garantie <a href="https://www.visale.fr" target="_blank" rel="noopener noreferrer" className="underline">Visale</a> (gratuit pour les moins de 30 ans)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* DPE Section */}
       <div className="max-w-6xl mx-auto px-4 py-10">
         <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Performance énergétique</h2>
@@ -302,7 +338,7 @@ export default function Home() {
           <div className="mt-6 pt-6 border-t border-gray-200">
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="bg-cream-100 rounded-lg p-4">
-                <p className="text-gray-600 mb-1">Coûts annuels estimés</p>
+                <p className="text-gray-600 mb-1">Coûts annuels d'électricité estimés</p>
                 <p className="font-bold text-lg text-primary-800">1 530 € à 2 140 €</p>
               </div>
               <div className="bg-cream-100 rounded-lg p-4">
