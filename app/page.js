@@ -8,7 +8,7 @@ const photos = [
   { label: "Chambre parentale", src: "/images/chambre2.jpg" },
   { label: "Chambre enfants", src: "/images/chambre3.jpg" },
   { label: "Séjour", src: "/images/sejour.jpg" },
-  { label: "Cuisine", src: "/images/cuisine.jpg" },
+  { label: "Cuisine équipée", src: "/images/cuisine.jpg" },
   { label: "Cuisine - Plaque gaz", src: "/images/cuisine-gaz.jpg" },
   { label: "Séjour avec escalier", src: "/images/sejour-escalier.jpg" }
 ];
