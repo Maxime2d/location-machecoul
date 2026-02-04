@@ -36,7 +36,7 @@ export async function POST(request) {
     const data = await request.json();
 
     // Validation des champs obligatoires
-    const requiredFields = ['name', 'email', 'phone', 'situation', 'income', 'occupants', 'moveDate'];
+    const requiredFields = ['name', 'email', 'phone', 'situation1', 'income', 'occupants', 'moveDate'];
     for (const field of requiredFields) {
       if (!data[field]) {
         return NextResponse.json(
@@ -53,7 +53,8 @@ export async function POST(request) {
       name: data.name,
       email: data.email,
       phone: data.phone,
-      situation: data.situation,
+      situation1: data.situation1,
+      situation2: data.situation2 || 'neant',
       income: data.income,
       occupants: data.occupants,
       moveDate: data.moveDate,
