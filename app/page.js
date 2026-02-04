@@ -418,7 +418,7 @@ export default function Home() {
             <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Description</h2>
             <div className="bg-white rounded-xl p-8 shadow-sm">
               <p className="text-gray-700 leading-relaxed mb-4">Maison de ville T4 de 86,22 m² habitables sur 2 niveaux, située à proximité immédiate du centre-ville de Machecoul. Cette habitation offre un cadre de vie confortable avec un séjour lumineux, une cuisine équipée (four Bosch, plaque gaz), et 3 chambres spacieuses. Idéale pour une famille.</p>
-              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m² (Garage, buanderie et vérandé non isolés et non chauffées.</p>
+              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m² (Pièces Garage, buanderie et véranda non isolés et non chauffées.</p>
             </div>
 
             {/* Surfaces */}
