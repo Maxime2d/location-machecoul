@@ -6,13 +6,12 @@ export async function POST(request) {
     const formData = await request.formData();
     const file = formData.get('file');
     const candidatureId = formData.get('candidatureId');
-    const fileType = formData.get('fileType'); // ex: "identite", "salaire1", etc.
+    const fileType = formData.get('fileType');
 
     if (!file) {
       return NextResponse.json({ error: 'Aucun fichier fourni' }, { status: 400 });
     }
 
-    // Vérifier le type de fichier (PDF, JPG, PNG uniquement)
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json({
@@ -20,19 +19,16 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    // Vérifier la taille (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({
         error: 'Fichier trop volumineux. Taille maximum: 5 Mo'
       }, { status: 400 });
     }
 
-    // Générer un nom de fichier unique
     const timestamp = Date.now();
     const extension = file.name.split('.').pop();
     const filename = `candidatures/${candidatureId}/${fileType}_${timestamp}.${extension}`;
 
-    // Upload vers Vercel Blob
     const blob = await put(filename, file, {
       access: 'public',
     });
@@ -50,4 +46,3 @@ export async function POST(request) {
     }, { status: 500 });
   }
 }
-
