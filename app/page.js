@@ -404,7 +404,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6">
           {plans.map((plan, i) => (
             <div key={i} className="bg-white rounded-xl p-4 shadow-sm">
-              <h3 className="font-semibold text-primary-800 mb-3 text-center">{i === 0 ? 'Rez-de-chaussée' : '1er étage'}</h3>
+              <h3 className="font-semibold text-primary-800 mb-3 text-center">{i === 0 ? '1er étage' : 'Rez-de-chaussée'}</h3>
               <img src={plan.src} alt={plan.label} className="w-full rounded-lg cursor-pointer hover:opacity-90 transition-opacity" onClick={() => openLightbox(i, true)} />
             </div>
           ))}
