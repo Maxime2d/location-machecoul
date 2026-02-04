@@ -73,7 +73,7 @@ export default function Admin() {
   const [filter, setFilter] = useState('all');
   const [loginError, setLoginError] = useState('');
   const [detailModal, setDetailModal] = useState(null);
-  const [previewDoc, setPreviewDoc] = useState(null); // Pour la prévisualisation des documents
+  const [previewDoc, setPreviewDoc] = useState(null);
 
   useEffect(() => {
     checkAuth();
@@ -144,7 +144,6 @@ export default function Admin() {
       });
       if (res.ok) {
         loadCandidatures();
-        // Mettre à jour le modal si ouvert
         if (detailModal && detailModal.id === id) {
           setDetailModal(prev => ({ ...prev, status }));
         }
@@ -157,7 +156,7 @@ export default function Admin() {
   const deleteCandidature = async (id) => {
     if (!confirm('Supprimer cette candidature ?')) return;
     try {
-      const res = await fetch(`/api/candidatures?id=${id}`, { method: 'DELETE' });
+      const res = await fetch('/api/candidatures?id=' + id, { method: 'DELETE' });
       if (res.ok) {
         loadCandidatures();
         setDetailModal(null);
@@ -169,14 +168,12 @@ export default function Admin() {
 
   const [sendingEmail, setSendingEmail] = useState(null);
 
-  // Accepter = juste changer le statut (pas de mail)
   const acceptCandidature = (c) => {
     updateStatus(c.id, 'accepted');
   };
 
-  // Refuser = envoyer email automatique + changer statut
   const rejectWithEmail = async (c) => {
-    if (!confirm(`Envoyer un email de refus à ${c.name} (${c.email}) ?`)) return;
+    if (!confirm('Envoyer un email de refus à ' + c.name + ' (' + c.email + ') ?')) return;
 
     setSendingEmail(c.id);
     try {
@@ -266,7 +263,6 @@ export default function Admin() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <div className="flex items-center gap-4">
@@ -302,19 +298,17 @@ export default function Admin() {
           </div>
         </div>
 
-        {/* Filtres */}
         <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
           <div className="flex flex-wrap items-center gap-4">
             <span className="text-gray-600 font-medium">Filtrer :</span>
             {['all', 'new', 'reviewing', 'accepted', 'rejected'].map(f => (
-              <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === f ? 'bg-primary-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+              <button key={f} onClick={() => setFilter(f)} className={'px-4 py-2 rounded-lg text-sm font-medium transition-colors ' + (filter === f ? 'bg-primary-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700')}>
                 {f === 'all' ? 'Toutes' : getStatusLabel(f)}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Liste */}
         <div className="space-y-4">
           {filteredCandidatures.length === 0 ? (
             <div className="bg-white rounded-xl p-8 shadow-sm text-center text-gray-500">
@@ -327,20 +321,15 @@ export default function Admin() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="font-semibold text-lg">{c.name}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        c.status === 'new' ? 'bg-yellow-100 text-yellow-800' :
-                        c.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                        c.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>{getStatusLabel(c.status)}</span>
+                      <span className={'px-3 py-1 rounded-full text-xs font-medium ' + (c.status === 'new' ? 'bg-yellow-100 text-yellow-800' : c.status === 'accepted' ? 'bg-green-100 text-green-800' : c.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800')}>{getStatusLabel(c.status)}</span>
                       {c.documents && Object.keys(c.documents).length > 0 && (
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{Object.keys(c.documents).length} docs</span>
                       )}
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div><p className="text-gray-500">Email</p><p className="font-medium"><a href={`mailto:${c.email}`} className="text-primary-600">{c.email}</a></p></div>
-                      <div><p className="text-gray-500">Téléphone</p><p className="font-medium"><a href={`tel:${c.phone}`} className="text-primary-600">{c.phone}</a></p></div>
-                      <div><p className="text-gray-500">Revenus</p><p className={`font-medium ${parseInt(c.income) >= SEUIL_REVENUS ? 'text-green-600' : 'text-orange-600'}`}>{parseInt(c.income).toLocaleString('fr-FR')} €</p></div>
+                      <div><p className="text-gray-500">Email</p><p className="font-medium"><a href={'mailto:' + c.email} className="text-primary-600">{c.email}</a></p></div>
+                      <div><p className="text-gray-500">Téléphone</p><p className="font-medium"><a href={'tel:' + c.phone} className="text-primary-600">{c.phone}</a></p></div>
+                      <div><p className="text-gray-500">Revenus</p><p className={'font-medium ' + (parseInt(c.income) >= SEUIL_REVENUS ? 'text-green-600' : 'text-orange-600')}>{parseInt(c.income).toLocaleString('fr-FR')} €</p></div>
                       <div><p className="text-gray-500">Date</p><p className="font-medium">{formatDate(c.date || c.submittedAt)}</p></div>
                     </div>
                   </div>
@@ -373,7 +362,6 @@ export default function Admin() {
         </div>
       </main>
 
-      {/* Modal détail */}
       {detailModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
@@ -387,17 +375,12 @@ export default function Admin() {
                   <h4 className="text-2xl font-bold">{detailModal.name}</h4>
                   <p className="text-gray-500">Reçue le {formatDate(detailModal.date || detailModal.submittedAt)}</p>
                 </div>
-                <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  detailModal.status === 'new' ? 'bg-yellow-100 text-yellow-800' :
-                  detailModal.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                  detailModal.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>{getStatusLabel(detailModal.status)}</span>
+                <span className={'px-4 py-2 rounded-full text-sm font-medium ' + (detailModal.status === 'new' ? 'bg-yellow-100 text-yellow-800' : detailModal.status === 'accepted' ? 'bg-green-100 text-green-800' : detailModal.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800')}>{getStatusLabel(detailModal.status)}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Email</p><p className="font-medium"><a href={`mailto:${detailModal.email}`} className="text-primary-600">{detailModal.email}</a></p></div>
-                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Téléphone</p><p className="font-medium"><a href={`tel:${detailModal.phone}`} className="text-primary-600">{detailModal.phone}</a></p></div>
+                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Email</p><p className="font-medium"><a href={'mailto:' + detailModal.email} className="text-primary-600">{detailModal.email}</a></p></div>
+                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Téléphone</p><p className="font-medium"><a href={'tel:' + detailModal.phone} className="text-primary-600">{detailModal.phone}</a></p></div>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-gray-500 text-sm">Situation Locataire 1</p>
                   <p className="font-medium">{detailModal.situation1 ? situationLabels[detailModal.situation1] || detailModal.situation1 : detailModal.situation || 'Non précisée'}</p>
@@ -409,15 +392,15 @@ export default function Admin() {
                 <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Nombre de personnes</p><p className="font-medium">{detailModal.occupants}</p></div>
               </div>
 
-              <div className={`rounded-lg p-4 ${parseInt(detailModal.income) >= SEUIL_REVENUS ? 'bg-green-50' : 'bg-orange-50'}`}>
+              <div className={'rounded-lg p-4 ' + (parseInt(detailModal.income) >= SEUIL_REVENUS ? 'bg-green-50' : 'bg-orange-50')}>
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-600 text-sm">Revenus nets mensuels</p>
-                    <p className={`font-bold text-2xl ${parseInt(detailModal.income) >= SEUIL_REVENUS ? 'text-green-600' : 'text-orange-600'}`}>{parseInt(detailModal.income).toLocaleString('fr-FR')} €</p>
+                    <p className={'font-bold text-2xl ' + (parseInt(detailModal.income) >= SEUIL_REVENUS ? 'text-green-600' : 'text-orange-600')}>{parseInt(detailModal.income).toLocaleString('fr-FR')} €</p>
                   </div>
                   <div className="text-right">
                     <p className="text-gray-600 text-sm">Ratio revenus/loyer</p>
-                    <p className={`font-bold text-xl ${(parseInt(detailModal.income) / LOYER) >= 2 ? 'text-green-600' : 'text-orange-600'}`}>{(parseInt(detailModal.income) / LOYER).toFixed(1)}x</p>
+                    <p className={'font-bold text-xl ' + ((parseInt(detailModal.income) / LOYER) >= 2 ? 'text-green-600' : 'text-orange-600')}>{(parseInt(detailModal.income) / LOYER).toFixed(1)}x</p>
                     <p className="text-xs text-gray-500">(recommandé: 2x)</p>
                   </div>
                 </div>
@@ -435,7 +418,6 @@ export default function Admin() {
                 </div>
               )}
 
-              {/* Indicateur garant */}
               {detailModal.hasGarant && (
                 <div className="bg-purple-50 rounded-lg p-4">
                   <p className="text-purple-800 font-medium flex items-center gap-2">
@@ -445,7 +427,6 @@ export default function Admin() {
                 </div>
               )}
 
-              {/* Documents du candidat */}
               {detailModal.documents && Object.keys(detailModal.documents).length > 0 && (
                 <div className="bg-blue-50 rounded-lg p-4">
                   <p className="text-blue-800 font-medium mb-4 flex items-center gap-2">
@@ -460,35 +441,16 @@ export default function Admin() {
                           <p className="text-xs text-gray-500 truncate">{doc.name}</p>
                         </div>
                         <div className="flex gap-2">
-                          <button
-                            onClick={() => setPreviewDoc({ ...doc, label: documentLabels[key] || key })}
-                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
+                          <button onClick={() => setPreviewDoc({ ...doc, label: documentLabels[key] || key })} className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             Voir
                           </button>
-                          <a
-                            href={doc.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1 bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                            </svg>
+                          <a href={doc.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             Ouvrir
                           </a>
-                          <a
-                            href={doc.url}
-                            download={doc.name}
-                            className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                            </svg>
+                          <a href={doc.url} download={doc.name} className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             Télécharger
                           </a>
                         </div>
@@ -498,7 +460,6 @@ export default function Admin() {
                 </div>
               )}
 
-              {/* Actions */}
               <div className="border-t pt-6">
                 <div className="flex gap-3 flex-wrap">
                   {detailModal.status !== 'accepted' && (
@@ -536,62 +497,32 @@ export default function Admin() {
         </div>
       )}
 
-      {/* Modal prévisualisation document */}
       {previewDoc && (
         <div className="fixed inset-0 bg-black/90 z-[60] flex flex-col">
-          {/* Header */}
           <div className="bg-gray-900 px-6 py-4 flex items-center justify-between">
             <div>
               <h3 className="text-white font-semibold text-lg">{previewDoc.label}</h3>
               <p className="text-gray-400 text-sm">{previewDoc.name}</p>
             </div>
             <div className="flex items-center gap-3">
-              <a
-                href={previewDoc.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
+              <a href={previewDoc.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 Ouvrir dans un nouvel onglet
               </a>
-              <a
-                href={previewDoc.url}
-                download={previewDoc.name}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
+              <a href={previewDoc.url} download={previewDoc.name} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 Télécharger
               </a>
-              <button
-                onClick={() => setPreviewDoc(null)}
-                className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+              <button onClick={() => setPreviewDoc(null)} className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </div>
           </div>
-
-          {/* Content */}
           <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
-            {previewDoc.name?.toLowerCase().endsWith('.pdf') ? (
-              <iframe
-                src={previewDoc.url}
-                className="w-full h-full max-w-5xl bg-white rounded-lg"
-                title={previewDoc.label}
-              />
+            {previewDoc.name && previewDoc.name.toLowerCase().endsWith('.pdf') ? (
+              <iframe src={previewDoc.url} className="w-full h-full max-w-5xl bg-white rounded-lg" title={previewDoc.label} />
             ) : (
-              <img
-                src={previewDoc.url}
-                alt={previewDoc.label}
-                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-              />
+              <img src={previewDoc.url} alt={previewDoc.label} className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />
             )}
           </div>
         </div>
