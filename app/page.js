@@ -18,7 +18,84 @@ const plans = [
   { label: "Plan du 1er étage", src: "/images/plan-etage.png" }
 ];
 
-// Liste des documents requis
+// Liste des situations professionnelles
+const situationsProfessionnelles = [
+  { value: 'cdi', label: 'CDI' },
+  { value: 'cdd', label: 'CDD' },
+  { value: 'fonctionnaire', label: 'Fonctionnaire' },
+  { value: 'retraite', label: 'Retraité(e)' },
+  { value: 'independant', label: 'Indépendant' },
+  { value: 'etudiant', label: 'Étudiant' },
+  { value: 'autre', label: 'Autre' },
+  { value: 'neant', label: 'Néant (pas de 2ème locataire)' },
+];
+
+// Documents requis selon la situation professionnelle
+const getDocumentsForSituation = (situation, locataireNum) => {
+  const prefix = `loc${locataireNum}_`;
+  const suffix = locataireNum === 1 ? '' : ' (Locataire 2)';
+
+  // Documents de base pour tous (sauf Néant)
+  if (situation === 'neant') return [];
+
+  const baseDocuments = [
+    { id: `${prefix}identite`, label: `Pièce d'identité${suffix}`, required: true },
+    { id: `${prefix}domicile`, label: `Justificatif de domicile${suffix}`, required: true },
+  ];
+
+  // Documents selon la situation
+  switch (situation) {
+    case 'cdi':
+    case 'cdd':
+      return [
+        ...baseDocuments,
+        { id: `${prefix}travail`, label: `Contrat de travail ou attestation employeur${suffix}`, required: true },
+        { id: `${prefix}salaire1`, label: `Bulletin de salaire mois 1${suffix}`, required: true },
+        { id: `${prefix}salaire2`, label: `Bulletin de salaire mois 2${suffix}`, required: true },
+        { id: `${prefix}salaire3`, label: `Bulletin de salaire mois 3${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition${suffix}`, required: true },
+      ];
+    case 'fonctionnaire':
+      return [
+        ...baseDocuments,
+        { id: `${prefix}travail`, label: `Arrêté de nomination ou attestation employeur${suffix}`, required: true },
+        { id: `${prefix}salaire1`, label: `Bulletin de salaire mois 1${suffix}`, required: true },
+        { id: `${prefix}salaire2`, label: `Bulletin de salaire mois 2${suffix}`, required: true },
+        { id: `${prefix}salaire3`, label: `Bulletin de salaire mois 3${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition${suffix}`, required: true },
+      ];
+    case 'retraite':
+      return [
+        ...baseDocuments,
+        { id: `${prefix}retraite`, label: `Attestation de retraite${suffix}`, required: true },
+        { id: `${prefix}pension`, label: `Dernier relevé de pension${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition${suffix}`, required: true },
+      ];
+    case 'independant':
+      return [
+        ...baseDocuments,
+        { id: `${prefix}kbis`, label: `Extrait Kbis ou inscription INSEE${suffix}`, required: true },
+        { id: `${prefix}bilan1`, label: `Bilan comptable année N-1${suffix}`, required: true },
+        { id: `${prefix}bilan2`, label: `Bilan comptable année N-2${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition${suffix}`, required: true },
+      ];
+    case 'etudiant':
+      return [
+        ...baseDocuments,
+        { id: `${prefix}scolarite`, label: `Certificat de scolarité${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition (ou parents)${suffix}`, required: true },
+      ];
+    case 'autre':
+    default:
+      return [
+        ...baseDocuments,
+        { id: `${prefix}justificatif`, label: `Justificatif de revenus${suffix}`, required: true },
+        { id: `${prefix}impots`, label: `Dernier avis d'imposition${suffix}`, required: true },
+      ];
+  }
+};
+
+// Liste des documents requis (conservé pour compatibilité mais plus utilisé directement)
 const documentsLocataire = [
   { id: 'identite', label: "Pièce d'identité", required: true },
   { id: 'domicile', label: "Justificatif de domicile", required: true },
@@ -51,6 +128,13 @@ export default function Home() {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [uploadProgress, setUploadProgress] = useState({});
   const [formData, setFormData] = useState({});
+  const [situation1, setSituation1] = useState('');
+  const [situation2, setSituation2] = useState('neant');
+
+  // Calculer les documents requis dynamiquement
+  const documentsLocataire1 = getDocumentsForSituation(situation1, 1);
+  const documentsLocataire2 = getDocumentsForSituation(situation2, 2);
+  const allDocumentsLocataires = [...documentsLocataire1, ...documentsLocataire2];
 
   const openLightbox = (index, plan = false) => {
     setCurrentPhoto(index);
@@ -121,16 +205,20 @@ export default function Home() {
   const handleStep1Submit = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    setFormData(Object.fromEntries(data.entries()));
+    const formEntries = Object.fromEntries(data.entries());
+    // Ajouter les situations au formData
+    formEntries.situation1 = situation1;
+    formEntries.situation2 = situation2;
+    setFormData(formEntries);
     setFormStep(2);
   };
 
   const handleStep2Submit = (e) => {
     e.preventDefault();
-    // Vérifier que tous les documents requis sont uploadés
-    const missingDocs = documentsLocataire.filter(doc => doc.required && !uploadedFiles[doc.id]);
+    // Vérifier que tous les documents requis sont uploadés pour les deux locataires
+    const missingDocs = allDocumentsLocataires.filter(doc => doc.required && !uploadedFiles[doc.id]);
     if (missingDocs.length > 0) {
-      alert('Veuillez fournir tous les documents obligatoires du locataire.');
+      alert('Veuillez fournir tous les documents obligatoires des locataires.');
       return;
     }
     if (hasGarant) {
@@ -172,6 +260,8 @@ export default function Home() {
           setUploadProgress({});
           setFormData({});
           setHasGarant(false);
+          setSituation1('');
+          setSituation2('neant');
         }, 3000);
       } else {
         const error = await res.json();
@@ -187,6 +277,8 @@ export default function Home() {
     setModalOpen(false);
     setFormStep(1);
     setFormResult(null);
+    setSituation1('');
+    setSituation2('neant');
   };
 
   const FileUploadItem = ({ doc }) => (
@@ -606,20 +698,35 @@ export default function Home() {
                         <label className="block text-gray-700 font-medium mb-2">Téléphone <span className="text-red-500">*</span></label>
                         <input type="tel" name="phone" required defaultValue={formData.phone} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none" />
                       </div>
-                      <div className="mb-5">
-                        <label className="block text-gray-700 font-medium mb-2">Situation professionnelle <span className="text-red-500">*</span></label>
-                        <select name="situation" required defaultValue={formData.situation} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none">
+                      <div className="mb-5 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-blue-800 text-sm mb-3 font-medium">💡 Les documents demandés seront adaptés à chaque situation professionnelle.</p>
+
+                        <label className="block text-gray-700 font-medium mb-2">Situation professionnelle - Locataire 1 <span className="text-red-500">*</span></label>
+                        <select
+                          name="situation1"
+                          required
+                          value={situation1}
+                          onChange={(e) => setSituation1(e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none mb-4"
+                        >
                           <option value="">-- Sélectionnez --</option>
-                          <option>2 CDI</option>
-                          <option>1 CDI + 1 CDD</option>
-                          <option>1 CDI</option>
-                          <option>2 CDD</option>
-                          <option>1 CDD</option>
-                          <option>Retraité(s)</option>
-                          <option>Fonctionnaire(s)</option>
-                          <option>Indépendant</option>
-                          <option>Autre</option>
+                          {situationsProfessionnelles.filter(s => s.value !== 'neant').map(s => (
+                            <option key={s.value} value={s.value}>{s.label}</option>
+                          ))}
                         </select>
+
+                        <label className="block text-gray-700 font-medium mb-2">Situation professionnelle - Locataire 2</label>
+                        <select
+                          name="situation2"
+                          value={situation2}
+                          onChange={(e) => setSituation2(e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                        >
+                          {situationsProfessionnelles.map(s => (
+                            <option key={s.value} value={s.value}>{s.label}</option>
+                          ))}
+                        </select>
+                        <p className="text-gray-500 text-xs mt-1">Sélectionnez "Néant" si vous êtes seul(e)</p>
                       </div>
                       <div className="mb-5">
                         <label className="block text-gray-700 font-medium mb-2">Revenus nets mensuels (foyer) <span className="text-red-500">*</span></label>
@@ -650,15 +757,36 @@ export default function Home() {
                     </form>
                   )}
 
-                  {/* Étape 2: Documents du locataire */}
+                  {/* Étape 2: Documents des locataires */}
                   {formStep === 2 && (
                     <form onSubmit={handleStep2Submit}>
-                      <h4 className="font-semibold text-lg text-primary-800 mb-2">Documents du locataire</h4>
                       <p className="text-gray-500 text-sm mb-6">Formats acceptés: PDF, JPG, PNG (max 5 Mo par fichier)</p>
 
-                      {documentsLocataire.map(doc => (
-                        <FileUploadItem key={doc.id} doc={doc} />
-                      ))}
+                      {/* Documents Locataire 1 */}
+                      <div className="mb-6">
+                        <h4 className="font-semibold text-lg text-primary-800 mb-3 pb-2 border-b border-primary-200">
+                          📄 Locataire 1 - {situationsProfessionnelles.find(s => s.value === situation1)?.label || 'Non défini'}
+                        </h4>
+                        {documentsLocataire1.length > 0 ? (
+                          documentsLocataire1.map(doc => (
+                            <FileUploadItem key={doc.id} doc={doc} />
+                          ))
+                        ) : (
+                          <p className="text-gray-500 italic">Veuillez sélectionner une situation professionnelle</p>
+                        )}
+                      </div>
+
+                      {/* Documents Locataire 2 (si applicable) */}
+                      {situation2 !== 'neant' && (
+                        <div className="mb-6">
+                          <h4 className="font-semibold text-lg text-primary-800 mb-3 pb-2 border-b border-primary-200">
+                            📄 Locataire 2 - {situationsProfessionnelles.find(s => s.value === situation2)?.label || 'Non défini'}
+                          </h4>
+                          {documentsLocataire2.map(doc => (
+                            <FileUploadItem key={doc.id} doc={doc} />
+                          ))}
+                        </div>
+                      )}
 
                       <div className="flex gap-4 mt-6">
                         <button type="button" onClick={() => setFormStep(1)} className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-4 rounded-lg font-bold transition-colors">
