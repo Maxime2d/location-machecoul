@@ -4,8 +4,51 @@ import { useState, useEffect } from 'react';
 const LOYER = 900;
 const SEUIL_REVENUS = 1800;
 
-// Labels pour les documents
+// Labels pour les situations professionnelles
+const situationLabels = {
+  cdi: 'CDI',
+  cdd: 'CDD',
+  fonctionnaire: 'Fonctionnaire',
+  retraite: 'Retraité(e)',
+  independant: 'Indépendant',
+  etudiant: 'Étudiant',
+  autre: 'Autre',
+  neant: 'Néant'
+};
+
+// Labels pour les documents (incluant les deux locataires)
 const documentLabels = {
+  // Locataire 1
+  loc1_identite: "Pièce d'identité (Loc. 1)",
+  loc1_domicile: "Justificatif de domicile (Loc. 1)",
+  loc1_travail: "Contrat de travail (Loc. 1)",
+  loc1_salaire1: "Bulletin de salaire 1 (Loc. 1)",
+  loc1_salaire2: "Bulletin de salaire 2 (Loc. 1)",
+  loc1_salaire3: "Bulletin de salaire 3 (Loc. 1)",
+  loc1_impots: "Avis d'imposition (Loc. 1)",
+  loc1_retraite: "Attestation de retraite (Loc. 1)",
+  loc1_pension: "Relevé de pension (Loc. 1)",
+  loc1_kbis: "Extrait Kbis (Loc. 1)",
+  loc1_bilan1: "Bilan comptable N-1 (Loc. 1)",
+  loc1_bilan2: "Bilan comptable N-2 (Loc. 1)",
+  loc1_scolarite: "Certificat de scolarité (Loc. 1)",
+  loc1_justificatif: "Justificatif de revenus (Loc. 1)",
+  // Locataire 2
+  loc2_identite: "Pièce d'identité (Loc. 2)",
+  loc2_domicile: "Justificatif de domicile (Loc. 2)",
+  loc2_travail: "Contrat de travail (Loc. 2)",
+  loc2_salaire1: "Bulletin de salaire 1 (Loc. 2)",
+  loc2_salaire2: "Bulletin de salaire 2 (Loc. 2)",
+  loc2_salaire3: "Bulletin de salaire 3 (Loc. 2)",
+  loc2_impots: "Avis d'imposition (Loc. 2)",
+  loc2_retraite: "Attestation de retraite (Loc. 2)",
+  loc2_pension: "Relevé de pension (Loc. 2)",
+  loc2_kbis: "Extrait Kbis (Loc. 2)",
+  loc2_bilan1: "Bilan comptable N-1 (Loc. 2)",
+  loc2_bilan2: "Bilan comptable N-2 (Loc. 2)",
+  loc2_scolarite: "Certificat de scolarité (Loc. 2)",
+  loc2_justificatif: "Justificatif de revenus (Loc. 2)",
+  // Ancien format (compatibilité)
   identite: "Pièce d'identité",
   domicile: "Justificatif de domicile",
   travail: "Contrat de travail",
@@ -13,6 +56,7 @@ const documentLabels = {
   salaire2: "Bulletin de salaire 2",
   salaire3: "Bulletin de salaire 3",
   impots: "Avis d'imposition",
+  // Garant
   garant_identite: "Pièce d'identité garant",
   garant_domicile: "Justificatif domicile garant",
   garant_travail: "Justificatif pro garant",
@@ -29,6 +73,7 @@ export default function Admin() {
   const [filter, setFilter] = useState('all');
   const [loginError, setLoginError] = useState('');
   const [detailModal, setDetailModal] = useState(null);
+  const [previewDoc, setPreviewDoc] = useState(null); // Pour la prévisualisation des documents
 
   useEffect(() => {
     checkAuth();
@@ -353,8 +398,15 @@ export default function Admin() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Email</p><p className="font-medium"><a href={`mailto:${detailModal.email}`} className="text-primary-600">{detailModal.email}</a></p></div>
                 <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Téléphone</p><p className="font-medium"><a href={`tel:${detailModal.phone}`} className="text-primary-600">{detailModal.phone}</a></p></div>
-                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Situation</p><p className="font-medium">{detailModal.situation}</p></div>
-                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Personnes</p><p className="font-medium">{detailModal.occupants}</p></div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-gray-500 text-sm">Situation Locataire 1</p>
+                  <p className="font-medium">{detailModal.situation1 ? situationLabels[detailModal.situation1] || detailModal.situation1 : detailModal.situation || 'Non précisée'}</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-gray-500 text-sm">Situation Locataire 2</p>
+                  <p className="font-medium">{detailModal.situation2 ? situationLabels[detailModal.situation2] || detailModal.situation2 : 'Néant'}</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4"><p className="text-gray-500 text-sm">Nombre de personnes</p><p className="font-medium">{detailModal.occupants}</p></div>
               </div>
 
               <div className={`rounded-lg p-4 ${parseInt(detailModal.income) >= SEUIL_REVENUS ? 'bg-green-50' : 'bg-orange-50'}`}>
@@ -408,10 +460,8 @@ export default function Admin() {
                           <p className="text-xs text-gray-500 truncate">{doc.name}</p>
                         </div>
                         <div className="flex gap-2">
-                          <a
-                            href={doc.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            onClick={() => setPreviewDoc({ ...doc, label: documentLabels[key] || key })}
                             className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -419,9 +469,20 @@ export default function Admin() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
                             Voir
+                          </button>
+                          <a
+                            href={doc.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                            Ouvrir
                           </a>
                           <a
-                            href={doc.url + '?download=1'}
+                            href={doc.url}
                             download={doc.name}
                             className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors"
                           >
@@ -471,6 +532,67 @@ export default function Admin() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal prévisualisation document */}
+      {previewDoc && (
+        <div className="fixed inset-0 bg-black/90 z-[60] flex flex-col">
+          {/* Header */}
+          <div className="bg-gray-900 px-6 py-4 flex items-center justify-between">
+            <div>
+              <h3 className="text-white font-semibold text-lg">{previewDoc.label}</h3>
+              <p className="text-gray-400 text-sm">{previewDoc.name}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <a
+                href={previewDoc.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                Ouvrir dans un nouvel onglet
+              </a>
+              <a
+                href={previewDoc.url}
+                download={previewDoc.name}
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Télécharger
+              </a>
+              <button
+                onClick={() => setPreviewDoc(null)}
+                className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
+            {previewDoc.name?.toLowerCase().endsWith('.pdf') ? (
+              <iframe
+                src={previewDoc.url}
+                className="w-full h-full max-w-5xl bg-white rounded-lg"
+                title={previewDoc.label}
+              />
+            ) : (
+              <img
+                src={previewDoc.url}
+                alt={previewDoc.label}
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              />
+            )}
           </div>
         </div>
       )}
