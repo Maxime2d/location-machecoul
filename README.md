@@ -44,3 +44,4 @@ Clique sur **Redeploy** pour appliquer les variables.
 ✅ Tokens JWT avec expiration 24h
 ✅ Données stockées dans Vercel KV (base de données sécurisée)
 ✅ API protégée côté serveur
+ 
