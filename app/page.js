@@ -2,15 +2,23 @@
 import { useState } from 'react';
 
 const photos = [
-  { label: "Salle d'eau", src: "/images/salle-eau.jpg" },
-  { label: "WC", src: "/images/wc.jpg" },
-  { label: "Chambre", src: "/images/chambre1.jpg" },
-  { label: "Chambre parentale", src: "/images/chambre2.jpg" },
-  { label: "Chambre enfants", src: "/images/chambre3.jpg" },
-  { label: "Séjour", src: "/images/sejour.jpg" },
-  { label: "Cuisine équipée", src: "/images/cuisine.jpg" },
-  { label: "Cuisine - Plaque gaz", src: "/images/cuisine-gaz.jpg" },
-  { label: "Séjour avec escalier", src: "/images/sejour-escalier.jpg" }
+  { label: "Séjour", src: "/images/annonce/01-sejour.jpg" },
+  { label: "Séjour et entrée", src: "/images/annonce/02-sejour-entree.jpg" },
+  { label: "Coin repas", src: "/images/annonce/03-salle-a-manger.jpg" },
+  { label: "Cuisine équipée", src: "/images/annonce/04-cuisine.jpg" },
+  { label: "Cuisine", src: "/images/annonce/05-cuisine-2.jpg" },
+  { label: "Véranda", src: "/images/annonce/06-veranda.jpg" },
+  { label: "Jardin", src: "/images/annonce/07-jardin.jpg" },
+  { label: "Terrasse", src: "/images/annonce/08-terrasse.jpg" },
+  { label: "Palier", src: "/images/annonce/09-palier.jpg" },
+  { label: "Dégagement étage", src: "/images/annonce/10-couloir-etage.jpg" },
+  { label: "Chambre 1", src: "/images/annonce/11-chambre-1.jpg" },
+  { label: "Chambre 2", src: "/images/annonce/12-chambre-2.jpg" },
+  { label: "Chambre 3", src: "/images/annonce/13-chambre-3.jpg" },
+  { label: "Salle d'eau", src: "/images/annonce/14-salle-d-eau.jpg" },
+  { label: "Garage", src: "/images/annonce/15-garage.jpg" },
+  { label: "Garage", src: "/images/annonce/16-garage-2.jpg" },
+  { label: "Buanderie", src: "/images/annonce/17-buanderie.jpg" }
 ];
 
 const plans = [
@@ -345,7 +353,7 @@ export default function Home() {
     <div className="bg-cream-50 font-sans text-gray-800">
       {/* Hero Section */}
       <div className="relative h-[65vh] bg-primary-900">
-        <img src="/images/sejour-escalier.jpg" className="w-full h-full object-cover" alt="Séjour avec escalier" />
+        <img src="/images/annonce/01-sejour.jpg" className="w-full h-full object-cover" alt="Séjour" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary-950/70 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="max-w-6xl mx-auto">
@@ -418,7 +426,7 @@ export default function Home() {
             <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Description</h2>
             <div className="bg-white rounded-xl p-8 shadow-sm">
               <p className="text-gray-700 leading-relaxed mb-4">Maison de ville T4 de 86,22 m² habitables sur 2 niveaux, située à proximité immédiate du centre-ville de Machecoul. Cette habitation offre un cadre de vie confortable avec un séjour lumineux, une cuisine équipée (four Bosch, plaque gaz), et 3 chambres spacieuses. Idéale pour une famille.</p>
-              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m² (Pièces Garage, buanderie et véranda non isolés et non chauffées.</p>
+              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m². Le garage, la buanderie et la véranda ne sont ni isolés ni chauffés.</p>
             </div>
 
             {/* Surfaces */}
@@ -492,7 +500,7 @@ export default function Home() {
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Honoraires</span><span className="font-semibold text-green-600">Aucun (particulier)</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Chambres</span><span className="font-semibold">3</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Salle d'eau</span><span className="font-semibold">1</span></div>
-              <div className="flex justify-between py-3"><span className="text-gray-600">Disponibilité</span><span className="font-semibold text-primary-700">1er mars 2026</span></div>
+              <div className="flex justify-between py-3"><span className="text-gray-600">Disponibilité</span><span className="font-semibold text-primary-700">16 novembre 2026</span></div>
             </div>
           </div>
         </div>
@@ -716,7 +724,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 pt-6 border-t border-primary-800 text-center text-cream-300 text-sm">
-            <p className="mb-2">© 2025 - Tous droits réservés</p>
+            <p className="mb-2">© 2026 - Tous droits réservés</p>
             <p className="text-xs">Les informations sur les risques sont disponibles sur <a href="https://www.georisques.gouv.fr" target="_blank" rel="noopener noreferrer" className="text-cream-100 hover:text-white underline">www.georisques.gouv.fr</a></p>
           </div>
         </div>
