@@ -358,11 +358,16 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="max-w-6xl mx-auto">
             <div className="inline-block bg-primary-600 text-white text-sm font-semibold px-3 py-1 rounded-full mb-3">Location vide</div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-3">Maison de ville T4 à Machecoul-Saint-Même</h1>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-3">Maison T4 avec jardin, véranda et garage</h1>
             <p className="text-cream-200 text-lg flex items-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               44270 Machecoul-Saint-Même, Loire-Atlantique
             </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {['Terrain 433 m²', 'Véranda 21 m²', 'Garage 23,5 m²', 'Cuisine équipée', 'Proche centre-ville'].map((a) => (
+                <span key={a} className="bg-white/15 backdrop-blur-sm border border-white/30 text-white text-sm font-medium px-3 py-1 rounded-full">{a}</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -387,6 +392,8 @@ export default function Home() {
               <div className="flex items-center gap-1"><span className="text-xs text-gray-500">DPE</span><span className="dpe-badge dpe-d">D</span></div>
               <div className="flex items-center gap-1"><span className="text-xs text-gray-500">GES</span><span className="ges-badge ges-b">B</span></div>
             </div>
+            <span className="bg-primary-50 text-primary-700 text-sm font-semibold px-3 py-1 rounded-full">Disponible le 16 novembre</span>
+            <span className="bg-primary-50 text-primary-700 text-sm font-semibold px-3 py-1 rounded-full">Sans frais d'agence</span>
           </div>
           <button onClick={() => setModalOpen(true)} className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors shadow-md">
             Déposer ma candidature
@@ -425,8 +432,9 @@ export default function Home() {
           <div className="md:col-span-2">
             <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Description</h2>
             <div className="bg-white rounded-xl p-8 shadow-sm">
-              <p className="text-gray-700 leading-relaxed mb-4">Maison de ville T4 de 86,22 m² habitables sur 2 niveaux, située à proximité immédiate du centre-ville de Machecoul. Cette habitation offre un cadre de vie confortable avec un séjour lumineux, une cuisine équipée (four Bosch, plaque gaz), et 3 chambres spacieuses. Idéale pour une famille.</p>
-              <p className="text-gray-700 leading-relaxed">Le bien dispose d'une salle d'eau moderne avec double vasque, 2 WC séparés, une buanderie de 11,50 m² et une véranda de 21 m². Terrain de 433 m². Le garage, la buanderie et la véranda ne sont ni isolés ni chauffés.</p>
+              <p className="text-gray-700 leading-relaxed mb-4">À proximité immédiate du centre-ville de Machecoul, cette maison de ville T4 de 86,22 m² sur deux niveaux réunit ce qu'on trouve rarement si près du centre : un jardin, une véranda de 21 m² et un garage. Les commerces, les écoles et le marché du centre-ville sont tout proches, et la gare TER de Machecoul dessert Nantes.</p>
+              <p className="text-gray-700 leading-relaxed mb-4">Au rez-de-chaussée, un séjour lumineux de 24 m² et une cuisine équipée (four Bosch, plaque gaz). À l'étage, trois chambres de 10 à 14 m² et une salle d'eau moderne avec double vasque. Un WC à chaque niveau. Idéale pour une famille.</p>
+              <p className="text-gray-700 leading-relaxed">Côté annexes : véranda de 21 m², garage de 23,50 m² et buanderie de 11,50 m², sur un terrain de 433 m². Le garage, la buanderie et la véranda ne sont ni isolés ni chauffés.</p>
             </div>
 
             {/* Surfaces */}
