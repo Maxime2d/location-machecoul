@@ -2,23 +2,21 @@
 import { useState } from 'react';
 
 const photos = [
-  { label: "Séjour", src: "/images/annonce/01-sejour.jpg" },
+  { label: "Séjour 24 m²", src: "/images/annonce/01-sejour.jpg" },
   { label: "Séjour et entrée", src: "/images/annonce/02-sejour-entree.jpg" },
-  { label: "Coin repas", src: "/images/annonce/03-salle-a-manger.jpg" },
+  { label: "Coin repas", src: "/images/annonce/03-coin-repas.jpg" },
   { label: "Cuisine équipée", src: "/images/annonce/04-cuisine.jpg" },
   { label: "Cuisine", src: "/images/annonce/05-cuisine-2.jpg" },
-  { label: "Véranda", src: "/images/annonce/06-veranda.jpg" },
+  { label: "Véranda 21 m²", src: "/images/annonce/06-veranda.jpg" },
   { label: "Jardin", src: "/images/annonce/07-jardin.jpg" },
   { label: "Terrasse", src: "/images/annonce/08-terrasse.jpg" },
   { label: "Palier", src: "/images/annonce/09-palier.jpg" },
-  { label: "Dégagement étage", src: "/images/annonce/10-couloir-etage.jpg" },
-  { label: "Chambre 1", src: "/images/annonce/11-chambre-1.jpg" },
-  { label: "Chambre 2", src: "/images/annonce/12-chambre-2.jpg" },
-  { label: "Chambre 3", src: "/images/annonce/13-chambre-3.jpg" },
+  { label: "Dégagement étage", src: "/images/annonce/10-degagement.jpg" },
+  { label: "Chambre", src: "/images/annonce/11-chambre-a.jpg" },
+  { label: "Chambre", src: "/images/annonce/12-chambre-b.jpg" },
+  { label: "Chambre", src: "/images/annonce/13-chambre-c.jpg" },
   { label: "Salle d'eau", src: "/images/annonce/14-salle-d-eau.jpg" },
-  { label: "Garage", src: "/images/annonce/15-garage.jpg" },
-  { label: "Garage", src: "/images/annonce/16-garage-2.jpg" },
-  { label: "Buanderie", src: "/images/annonce/17-buanderie.jpg" }
+  { label: "Garage 23,5 m²", src: "/images/annonce/15-garage.jpg" }
 ];
 
 const plans = [
@@ -406,8 +404,9 @@ export default function Home() {
         <h2 className="font-serif text-3xl font-bold text-primary-900 mb-6">Photos du bien</h2>
         <div className="photo-grid">
           {photos.map((photo, i) => (
-            <div key={i} className="photo-item" onClick={() => openLightbox(i)}>
+            <div key={i} className="photo-item relative" onClick={() => openLightbox(i)}>
               <img src={photo.src} alt={photo.label} />
+              <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent text-white text-xs md:text-sm font-medium px-3 pt-6 pb-2 pointer-events-none">{photo.label}</span>
             </div>
           ))}
         </div>
