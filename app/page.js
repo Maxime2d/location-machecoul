@@ -390,12 +390,16 @@ export default function Home() {
               <div className="flex items-center gap-1"><span className="text-xs text-gray-500">DPE</span><span className="dpe-badge dpe-d">D</span></div>
               <div className="flex items-center gap-1"><span className="text-xs text-gray-500">GES</span><span className="ges-badge ges-b">B</span></div>
             </div>
-            <span className="bg-primary-50 text-primary-700 text-sm font-semibold px-3 py-1 rounded-full">Disponible le 16 novembre</span>
-            <span className="bg-primary-50 text-primary-700 text-sm font-semibold px-3 py-1 rounded-full">Sans frais d'agence</span>
           </div>
           <button onClick={() => setModalOpen(true)} className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors shadow-md">
             Déposer ma candidature
           </button>
+        </div>
+        <div className="bg-primary-50 border-t border-primary-100">
+          <div className="max-w-6xl mx-auto px-4 py-1.5 flex flex-wrap gap-x-6 gap-y-1 text-sm font-semibold text-primary-700">
+            <span>✓ Disponible dès maintenant</span>
+            <span>✓ Sans frais d'agence</span>
+          </div>
         </div>
       </div>
 
@@ -507,7 +511,7 @@ export default function Home() {
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Honoraires</span><span className="font-semibold text-green-600">Aucun (particulier)</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Chambres</span><span className="font-semibold">3</span></div>
               <div className="flex justify-between py-3 border-b"><span className="text-gray-600">Salle d'eau</span><span className="font-semibold">1</span></div>
-              <div className="flex justify-between py-3"><span className="text-gray-600">Disponibilité</span><span className="font-semibold text-primary-700">16 novembre 2026</span></div>
+              <div className="flex justify-between py-3"><span className="text-gray-600">Disponibilité</span><span className="font-semibold text-primary-700">Dès maintenant</span></div>
             </div>
           </div>
         </div>
