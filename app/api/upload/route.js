@@ -1,19 +1,40 @@
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 
+// Types acceptés et extension imposée (on ne se fie pas au nom du fichier envoyé)
+const ALLOWED_TYPES = {
+  'application/pdf': 'pdf',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+};
+
+// Ne garder que des caractères sûrs dans les éléments du chemin
+function safeSegment(value, fallback) {
+  const cleaned = String(value || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 60);
+  return cleaned || fallback;
+}
+
 export async function POST(request) {
   try {
+    // Stockage privé dédié aux pièces des candidats.
+    // Sans ce jeton, on refuse l'envoi plutôt que d'écrire dans un stockage public.
+    const token = process.env.DOCS_READ_WRITE_TOKEN;
+    if (!token) {
+      console.error('DOCS_READ_WRITE_TOKEN non configuré : envoi de document refusé');
+      return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file');
-    const candidatureId = formData.get('candidatureId');
-    const fileType = formData.get('fileType');
+    const candidatureId = safeSegment(formData.get('candidatureId'), 'sans-id');
+    const fileType = safeSegment(formData.get('fileType'), 'document');
 
-    if (!file) {
+    if (!file || typeof file === 'string') {
       return NextResponse.json({ error: 'Aucun fichier fourni' }, { status: 400 });
     }
 
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-    if (!allowedTypes.includes(file.type)) {
+    const extension = ALLOWED_TYPES[file.type];
+    if (!extension) {
       return NextResponse.json({
         error: 'Type de fichier non autorisé. Formats acceptés: PDF, JPG, PNG'
       }, { status: 400 });
@@ -26,17 +47,21 @@ export async function POST(request) {
     }
 
     const timestamp = Date.now();
-    const extension = file.name.split('.').pop();
     const filename = `candidatures/${candidatureId}/${fileType}_${timestamp}.${extension}`;
 
     const blob = await put(filename, file, {
-      access: 'public',
+      access: 'private',
+      addRandomSuffix: true,
+      contentType: file.type,
+      token,
     });
 
+    // Le fichier n'a pas d'adresse publique : il n'est lisible que par
+    // l'administrateur connecté, via /api/document.
     return NextResponse.json({
       success: true,
-      url: blob.url,
-      filename: filename
+      url: '/api/document?pathname=' + encodeURIComponent(blob.pathname),
+      filename: blob.pathname
     });
 
   } catch (error) {
