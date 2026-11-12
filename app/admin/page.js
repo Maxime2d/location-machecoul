@@ -172,6 +172,11 @@ export default function Admin() {
     updateStatus(c.id, 'accepted');
   };
 
+  // Annule une acceptation : le dossier repasse à l'état initial, sans aucun e-mail
+  const resetCandidature = (c) => {
+    updateStatus(c.id, 'new');
+  };
+
   const rejectWithEmail = async (c) => {
     if (!confirm('Envoyer un email de refus à ' + c.name + ' (' + c.email + ') ?')) return;
 
@@ -337,6 +342,11 @@ export default function Admin() {
                     <button onClick={() => setDetailModal(c)} className="bg-blue-100 hover:bg-blue-200 p-2 rounded-lg" title="Voir détails et documents">
                       <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </button>
+                    {c.status === 'accepted' && (
+                      <button onClick={() => resetCandidature(c)} className="bg-yellow-100 hover:bg-yellow-200 p-2 rounded-lg" title="Remettre en attente (sans mail)">
+                        <svg className="w-5 h-5 text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+                      </button>
+                    )}
                     {c.status !== 'accepted' && (
                       <button onClick={() => acceptCandidature(c)} className="bg-green-100 hover:bg-green-200 p-2 rounded-lg" title="Accepter (sans mail)">
                         <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
@@ -462,6 +472,12 @@ export default function Admin() {
 
               <div className="border-t pt-6">
                 <div className="flex gap-3 flex-wrap">
+                  {detailModal.status === 'accepted' && (
+                    <button onClick={() => resetCandidature(detailModal)} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+                      Remettre en attente
+                    </button>
+                  )}
                   {detailModal.status !== 'accepted' && (
                     <button onClick={() => acceptCandidature(detailModal)} className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
@@ -489,7 +505,7 @@ export default function Admin() {
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-3 text-center">
-                  Accepter = change le statut uniquement • Refuser = envoie un email automatique de refus
+                  Accepter = change le statut uniquement • Remettre en attente = annule l'acceptation, sans email • Refuser = envoie un email automatique de refus
                 </p>
               </div>
             </div>
