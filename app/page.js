@@ -541,8 +541,8 @@ export default function Home() {
                   <span className="text-primary-700 text-sm font-bold">2</span>
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800">Situation professionnelle stable</p>
-                  <p className="text-sm text-gray-600">CDI (hors période d'essai), Fonctionnaire, Retraité, ou Indépendant avec 2 ans d'ancienneté</p>
+                  <p className="font-medium text-gray-800">Stabilité et garanties</p>
+                  <p className="text-sm text-gray-600">Situation professionnelle stable, ou garantie complémentaire (garant ou Visale). Chaque dossier est étudié individuellement.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
